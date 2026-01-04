@@ -38,8 +38,6 @@ public class TaskListMapperImpl implements TaskListMapper {
 
     @Override
     public TaskListDto toDto(TaskList taskList) {
-        System.out.println("tasks => " + taskList.getTasks());
-        System.out.println(calculateTaskListProgress(taskList.getTasks()));
         return new TaskListDto(
                 taskList.getId(),
                 taskList.getTitle(),
@@ -64,7 +62,6 @@ public class TaskListMapperImpl implements TaskListMapper {
         long closedTaskCount = tasks.stream()
                 .filter(task -> TaskStatus.CLOSED == task.getStatus())
                 .count();
-        System.out.println("tasks closed => " + closedTaskCount);
 
         return (double) closedTaskCount / tasks.size();
     }
