@@ -1,0 +1,133 @@
+package org.example.tasktracker.entities;
+
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+
+@Entity
+@Table(name = "task_lists")
+public class TaskList {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", nullable = false, updatable = false)
+    private UUID id;
+    @Column(name = "title", nullable = false)
+    private  String title;
+    @Column(name = "description", length = 300)
+    private String description;
+
+    @OneToMany(mappedBy = "taskList", cascade = {
+            CascadeType.REMOVE, CascadeType.PERSIST
+    })
+    private List<Task> tasks;
+
+    @CreationTimestamp
+    @Column(name = "created_at",  nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    public TaskList() {
+    }
+
+    public TaskList(UUID id, String title, String description, List<Task> tasks, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.tasks = tasks;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        TaskList taskList = (TaskList) o;
+        return Objects.equals(id, taskList.id) && Objects.equals(title, taskList.title) && Objects.equals(description, taskList.description) && Objects.equals(tasks, taskList.tasks) && Objects.equals(createdAt, taskList.createdAt) && Objects.equals(updatedAt, taskList.updatedAt) && Objects.equals(deletedAt, taskList.deletedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, description, tasks, createdAt, updatedAt, deletedAt);
+    }
+
+    @Override
+    public String toString() {
+        return "TaskList{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", tasks=" + tasks +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", deletedAt=" + deletedAt +
+                '}';
+    }
+}
